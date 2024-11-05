@@ -1,8 +1,10 @@
 <?php
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductMappingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,6 +39,32 @@ Route::middleware('auth')->group(function () {
     Route::put("/users/update/{id}", [UserController::class, 'update'])->name('users.update');
 
     Route::delete("/users/delete/{id}", [UserController::class, 'destroy'])->name('users.destroy'); // Delete user
+
+
+
+
+    // products 
+
+
+    
+
+Route::get('/products/show', [ProductController::class, 'index'])->name('products.index');
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
+
 });
+
+
+// catogey
+
+Route::resource('categories', CategoryController::class);
+
+
+Route::get('product_mapping/create', [ProductMappingController::class, 'create'])->name('product_mapping.create');
+Route::post('product_mapping/store', [ProductMappingController::class, 'store'])->name('product_mapping.store');
+
 
 require __DIR__.'/auth.php';
