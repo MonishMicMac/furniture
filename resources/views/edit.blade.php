@@ -7,6 +7,7 @@
         @csrf
         @method('PUT')
         
+        <!-- Existing Fields -->
         <div class="form-group">
             <label>Name</label>
             <input type="text" name="name" class="form-control" value="{{ $user->name }}" required>
@@ -37,6 +38,30 @@
             <input type="text" name="pincode" class="form-control" value="{{ $user->pincode }}" required>
             <span class="text-danger error-text pincode_error"></span>
         </div>
+        
+        <!-- New Fields -->
+        <div class="form-group">
+            <label>GST No</label>
+            <input type="text" name="gst_no" class="form-control" value="{{ $user->gst_no }}">
+            <span class="text-danger error-text gst_no_error"></span>
+        </div>
+        <div class="form-group">
+            <label>Shop Name</label>
+            <input type="text" name="shop_name" class="form-control" value="{{ $user->shop_name }}">
+            <span class="text-danger error-text shop_name_error"></span>
+        </div>
+        <div class="form-group">
+            <label>PAN No</label>
+            <input type="text" name="pan_no" class="form-control" value="{{ $user->pan_no }}">
+            <span class="text-danger error-text pan_no_error"></span>
+        </div>
+        <div class="form-group">
+            <label>OTP</label>
+            <input type="text" name="otp" class="form-control" value="{{ $user->otp }}">
+            <span class="text-danger error-text otp_error"></span>
+        </div>
+       
+
         <button type="submit" class="btn btn-primary">Update User</button>
     </form>
 </div>
@@ -88,6 +113,26 @@
             if (pincode === '') showError('pincode', 'Pincode is required.');
             else if (!/^\d{6}$/.test(pincode)) showError('pincode', 'Enter a valid 6-digit pincode.');
 
+            // New Fields Validation
+            // GST No validation (optional)
+            const gstNo = $('input[name="gst_no"]').val().trim();
+            if (gstNo && !/^[A-Z0-9]{15}$/.test(gstNo)) showError('gst_no', 'Enter a valid GST number.');
+
+            // Shop Name validation (optional)
+            const shopName = $('input[name="shop_name"]').val().trim();
+            if (shopName && shopName.length < 3) showError('shop_name', 'Shop name should be at least 3 characters.');
+
+            // PAN No validation (optional)
+            const panNo = $('input[name="pan_no"]').val().trim();
+            if (panNo && !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panNo)) showError('pan_no', 'Enter a valid PAN number.');
+
+            // OTP validation (optional)
+            const otp = $('input[name="otp"]').val().trim();
+            if (otp && !/^\d{6}$/.test(otp)) showError('otp', 'Enter a valid 6-digit OTP.');
+
+            // Approval Status validation
+           
+
             // If there are no errors, proceed with AJAX call
             if (!hasError) {
                 $.ajax({
@@ -96,10 +141,10 @@
                     data: $(this).serialize(),
                     success: function (response) {
                         Swal.fire({
-  title: "Good job!",
-  text: "You clicked the button!",
-  icon: "success"
-});
+                            title: "Good job!",
+                            text: "User updated successfully!",
+                            icon: "success"
+                        });
                         window.location.href = '{{ route('users.index') }}'; // Redirect after success
                     },
                     error: function (xhr) {

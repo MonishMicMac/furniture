@@ -2,6 +2,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductMappingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -34,9 +35,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // User management routes
-    Route::get("/users", [UserController::class, 'show'])->name('users.index'); // List users
+    Route::get('/users', [UserController::class, 'show'])->name('users.index');
     Route::get("/users/edit/{id}", [UserController::class, 'edit'])->name('users.edit'); // Edit user
     Route::put("/users/update/{id}", [UserController::class, 'update'])->name('users.update');
+// web.php
+Route::post('/users/{id}/approve', [UserController::class, 'approve'])->name('users.approve');
+Route::post('/users/{id}/decline', [UserController::class, 'decline'])->name('users.decline');
+Route::get('/usersmodal/{id}', [UserController::class, 'showinmodal']);
 
     Route::delete("/users/delete/{id}", [UserController::class, 'destroy'])->name('users.destroy'); // Delete user
 
@@ -65,6 +70,12 @@ Route::resource('categories', CategoryController::class);
 
 Route::get('product_mapping/create', [ProductMappingController::class, 'create'])->name('product_mapping.create');
 Route::post('product_mapping/store', [ProductMappingController::class, 'store'])->name('product_mapping.store');
+
+
+
+Route::resource('subcategories', SubcategoryController::class)->except(['create']);
+Route::get('subcategories', [SubcategoryController::class, 'index'])->name('subcategories.index');
+
 
 
 require __DIR__.'/auth.php';

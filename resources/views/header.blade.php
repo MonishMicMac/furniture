@@ -14,8 +14,10 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
 <link href="{{ asset('lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+
 <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
 
 </head>
 
@@ -57,7 +59,10 @@
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="/products/show" class="dropdown-item">Add Product</a>
                             <a href="/categories" class="dropdown-item">Add Category</a>
-                            <a href="element.html" class="dropdown-item">Other Elements</a>
+                            <a href="/product_mapping/create" class="dropdown-item">Product Mapping</a>
+
+                            <a href="/approve_users" class="dropdown-item">Product Mapping</a>
+
                         </div>
                     </div>
 
