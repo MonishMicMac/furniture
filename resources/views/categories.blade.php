@@ -31,9 +31,19 @@
             </tr>
         </thead>
         <tbody>
+            <?php
+
+            $sno=0;
+            ?>
+
             @foreach($categories as $category)
+
+            <?php
+
+                $sno++;
+                ?>
                 <tr>
-                    <td>{{ $category->id }}</td>
+                    <td>{{ $sno}}</td>
                     <td>{{ $category->name }}</td>
                     <td>
                         <a href="{{ route('categories.edit', $category) }}" class="btn btn-warning btn-sm">Edit</a>

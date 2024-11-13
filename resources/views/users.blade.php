@@ -1,8 +1,8 @@
 @include('header')
 
 <div class="container mt-4">
-    <h2 class="mb-4">User List</h2>
-    
+    <h2 class="mb-4 text-center font-weight-bold">User List</h2>
+
     <!-- Approval Status Filter -->
     <form method="GET" action="{{ route('users.index') }}" class="mb-4">
         <label for="approval_status">Filter by Approval Status:</label>
@@ -81,7 +81,7 @@
                                 </form>
                             </div>
                         </td>
-                        <td>   <button class="btn btn-info btn-sm view-details" data-user-id="{{ $user->id }}" data-toggle="modal" data-target="#userModal">View Details</button>
+                        <td>   <button class="btn btn-primary btn-sm view-details text-white" data-user-id="{{ $user->id }}" data-toggle="modal" data-target="#userModal">View Details</button>
                             
                         </td>
                     </tr>
@@ -99,19 +99,22 @@ $sno++;
 
 <!-- User Details Modal -->
 <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <!-- Transparent header -->
+            <div class="modal-header bg-transparent border-0">
                 <h5 class="modal-title" id="userModalLabel">User Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <!-- Modal body with standard background -->
+            <div class="modal-body p-4">
                 <div id="userDetails">
                     <!-- Dynamic content will be inserted here -->
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <!-- Transparent footer with custom button style -->
+            <div class="modal-footer bg-transparent border-0">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    use HasFactory;
+
+    // Fillable columns (columns that can be mass-assigned)
     protected $fillable = [
         'name',
         'description',
@@ -14,17 +17,24 @@ class Product extends Model
         'quantity',
         'product_image_path',
         'action',
-        'brand', 
-        'discount_price', // Add discount price field if included in migration
-        'reviews_count', // Add reviews count field if included in migration
-        'average_rating', // Add average rating field if included in migration
-        'category_id',
+        'brand',
+        'discount_price',
+        'reviews_count',
+        'average_rating',
+       
+        'sub_category_id',           // Added sub_category_id
+        'product_code',  // Added product_code_availability
+        'warranty_month',             // Added warranty_month
+        'min_order_qty',              // Added min_order_qty
+        'liquidation_status',         // Added liquidation_status
     ];
+    
 
-    public function productMappings()
-{
-    return $this->hasMany(ProductMapping::class);
-}
-
-
+    /**
+     * Define the relationship with the ProductMapping model.
+     */
+    public function productImages()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 }

@@ -56,6 +56,7 @@ Route::get('/usersmodal/{id}', [UserController::class, 'showinmodal']);
 Route::get('/products/show', [ProductController::class, 'index'])->name('products.index');
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+Route::get('/productsshow', [ProductController::class, 'showProduct'])->name('products.destroy');
 
 Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
 Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');

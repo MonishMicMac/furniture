@@ -37,7 +37,7 @@
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>DASHMIN</h3>
+                    <h3 class="text-primary">Virkshh</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
@@ -56,12 +56,13 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
                                 class="fa fa-laptop me-2"></i>Masters</a>
-                        <div class="dropdown-menu bg-transparent border-0">
-                            <a href="/products/show" class="dropdown-item">Add Product</a>
+                        <div class="dropdown-menu bg-transparent border-0">  
                             <a href="/categories" class="dropdown-item">Add Category</a>
+                            <a href="/subcategories" class="dropdown-item">Add Sub Category</a>
+                            <a href="/products/show" class="dropdown-item">Add Product</a>
                             <a href="/product_mapping/create" class="dropdown-item">Product Mapping</a>
 
-                            <a href="/approve_users" class="dropdown-item">Product Mapping</a>
+                            
 
                         </div>
                     </div>

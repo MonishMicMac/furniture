@@ -3,7 +3,7 @@
 @include("header")
 
 <div class="container">
-    <h2>Create Subcategory</h2>
+    <h2 class="text-center ">Create Subcategory</h2>
     <!-- Subcategory creation form -->
     <form action="{{ route('subcategories.store') }}" method="POST">
         @csrf

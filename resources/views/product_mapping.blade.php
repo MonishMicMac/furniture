@@ -3,7 +3,7 @@
 @include('header')
 
 <div class="container mt-4">
-    <h2>Product-Category Mapping</h2>
+    <h2 class="text-center">Product-Category Mapping</h2>
 
     <!-- Mapping Form -->
     <form action="{{ route('product_mapping.store') }}" method="POST" class="mb-4">

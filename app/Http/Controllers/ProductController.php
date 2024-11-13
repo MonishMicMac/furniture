@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
+use App\Models\Subcategory;
+use DB;
 use Illuminate\Http\Request;
 use Storage;
 use Validator;
@@ -12,74 +15,60 @@ class ProductController extends Controller
 {
     public function index()
     {
+        // Fetch categories and subcategories where action = 0
         $categories = Category::where('action', '0')->get();
+        $subcategories = Subcategory::where('action', '0')->get();
     
-        $products = Product::where('products.action', '0') // Specify the table
-        ->join('categories', 'products.category_id', '=', 'categories.id')
-        ->select('products.*', 'categories.name as category_name') // Select product fields and category name
-        ->get();
-        return view('products', compact('products', 'categories')); // Pass both products and categories to the view
+        // Fetch products where action = 0 without joining on category_id
+        $products = Product::where('products.action', '0')->get();
+    
+        // Pass products, categories, and subcategories to the view
+        return view('products', compact('products', 'categories', 'subcategories'));
     }
     
+
 
     public function store(Request $request)
-{
-    // Define validation rules
-    $validator = Validator::make($request->all(), [
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'price' => 'required|numeric',
-        'discount_price' => 'nullable|numeric|lt:price', // Ensure discount price is less than the original price
-        'quantity' => 'required|integer|min:0',
-        'brand' => 'nullable|string|max:255',
-        'product_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'category_id' => 'required|exists:categories,id',
-    ]);
-
-    // Check if the validation fails
-    if ($validator->fails()) {
-
-        // dd($validator->messages());
-
-        return redirect()->back()
-                         ->withErrors($validator)
-                         ->withInput();
-    }
-
-   
-    // Check if the file is present
-    if ($request->hasFile('product_image')) {
-        try {
-
-           
-            // Store the image and get its path
-            $imagePath = $request->file('product_image')->store('images', 'public');
-
-            // Create the product
-            Product::create([
-                'name' => $request->name,
-                'description' => $request->description,
-                'price' => $request->price,
-                'discount_price' => $request->discount_price, // Add discount price
-                'quantity' => $request->quantity,
-                'brand' => $request->brand, // Add brand
-                
-                'product_image_path' => $imagePath,
-                'category_id' => $request->category_id
-            ]);
-           
-            return redirect()->route('products.index')->with('success', 'Product created successfully!');
-        } catch (\Exception $e) {
-
-            dd($e->getMessage());
-            \Log::error('Image upload error: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Image upload failed. Please try again.');
+    {
+        // Validation rules
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'product_code' => 'required|string|unique:products,product_code|max:255',
+            'price' => 'required|numeric|min:0',
+            'discount_price' => 'nullable|numeric|lt:price',
+            'quantity' => 'required|integer|min:0',
+            'brand' => 'nullable|string|max:255',
+            'warranty_month' => 'nullable|integer|min:0',
+            'min_order_qty' => 'nullable|integer|min:0',
+            'product_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'sub_category_id' => 'required|exists:subcategories,id', // Ensure the column name matches
+        ]);
+    
+        // If validation fails, redirect back with errors
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
-    } else {
-        \Log::error('Image upload failed: No file was uploaded.');
-        return redirect()->back()->with('error', 'No image file was uploaded.');
+    
+        // Store product and associated subcategory
+        $product = Product::create($request->only([
+            'name', 'product_code', 'price', 'discount_price', 'quantity', 'brand', 
+            'sub_category_id', 'warranty_month', 'min_order_qty'
+        ]));
+    
+        // Store images if available
+        if ($request->hasFile('product_images')) {
+            foreach ($request->file('product_images') as $image) {
+                $imagePath = $image->store('images', 'public');
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_path' => $imagePath,
+                ]);
+            }
+        }
+    
+        return redirect()->route('products.index')->with('success', 'Product created successfully!');
     }
-}
+    
 
 
     public function destroy(Product $product)
@@ -141,5 +130,19 @@ class ProductController extends Controller
 }
 
     
+public function showProduct()
+{
+    // Get all products with their associated image paths (without using relationships)
+    $products = DB::table('products')
+        ->leftJoin('product_images', 'products.id', '=', 'product_images.product_id')
+        ->select('products.*', 'product_images.image_path')
+        ->get();
+
+    // Debug the result to ensure we are getting the data correctly
+    // dd($products);
+
+    // Return the view with the products data
+    return view('product_show', compact('products'));
+}
 
 }
