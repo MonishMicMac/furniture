@@ -1,11 +1,13 @@
 <?php
+use App\Http\Controllers\AppBannerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductMappingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductController; 
+use App\Http\Controllers\PromocodeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,7 +58,7 @@ Route::get('/usersmodal/{id}', [UserController::class, 'showinmodal']);
 Route::get('/products/show', [ProductController::class, 'index'])->name('products.index');
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-Route::get('/productsshow', [ProductController::class, 'showProduct'])->name('products.destroy');
+Route::get('/productsshow', [ProductController::class, 'showProduct'])->name('products.show');
 
 Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
 Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
@@ -72,11 +74,21 @@ Route::resource('categories', CategoryController::class);
 Route::get('product_mapping/create', [ProductMappingController::class, 'create'])->name('product_mapping.create');
 Route::post('product_mapping/store', [ProductMappingController::class, 'store'])->name('product_mapping.store');
 
-
-
+Route::delete('/products/{product}/remove-image', [ProductController::class, 'removeImage']);
 Route::resource('subcategories', SubcategoryController::class)->except(['create']);
 Route::get('subcategories', [SubcategoryController::class, 'index'])->name('subcategories.index');
 
+Route::get('banners/create', [AppBannerController::class, 'create'])->name('banners.create');
+Route::post('/banners/store', [AppBannerController::class, 'store'])->name('banners.store');
+Route::resource('banners', AppBannerController::class);
 
 
+
+Route::get('/promocode/create', [PromocodeController::class, 'create'])->name('promocode.create');
+Route::post('/promocode/store', [PromocodeController::class, 'store'])->name('promocode.store');
+Route::get('/promocode/{id}/edit', [PromocodeController::class, 'edit'])->name('promocode.edit');
+Route::put('/promocode/{id}', [PromocodeController::class, 'update'])->name('promocode.update');
+
+// Route to delete a promo code
+Route::delete('/promocode/{id}', [PromocodeController::class, 'destroy'])->name('promocode.destroy');
 require __DIR__.'/auth.php';

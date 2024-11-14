@@ -15,8 +15,11 @@
                 <th>Quantity</th>
                 <th>Brand</th>
                 <th>Average Rating</th>
-              
-                <th>Image</th>
+                <th>Caterogy</th>
+                <th>Subcaterogy</th>
+                
+                <th>Images</th>
+             
                 <th>Actions</th>
             </tr>
         </thead>
@@ -31,13 +34,19 @@
                 <td>{{ $product->quantity }}</td>
                 <td>{{ $product->brand ?? 'N/A' }}</td>
                 <td>{{ number_format($product->average_rating, 1) ?? 'N/A' }}</td>
-               
+                <td>{{ $product->category_name ?? 'N/A' }}</td> <!-- Display Category Name -->
+                <td>{{ $product->subcategory_name ?? 'N/A' }}</td> <!-- Display Subcategory Name -->
                 <td>
-                    @if($product->image_path)
-                    <img src="{{ asset('storage/images/' . $product->image_path) }}" alt="{{ $product->name }}" width="100">
-
+                    @if($product->images)
+                        @php
+                            // Split the images by comma to create an array
+                            $images = explode(',', $product->images);
+                        @endphp
+                        @foreach($images as $image)
+                            <img src="{{ asset('storage/' . $image) }}" alt="{{ $product->name }}" width="100" style="margin: 5px;">
+                        @endforeach
                     @else
-                        No Image
+                        No Images
                     @endif
                 </td>
                 <td>
@@ -50,10 +59,11 @@
                     </form>
                 </td>
             </tr>
-        @endforeach
-        
+            @endforeach
         </tbody>
+        
     </table>
+    
 </div>
 
 <!-- Modal for Product Details -->
@@ -93,29 +103,50 @@
     }
 
     // View product details in a modal
-    function viewProductDetails(productId) {
-        // Get product details by ID from server-side (already passed via Blade)
-        const productData = @json($products);
-        const product = productData.find(p => p.id === productId);
+   // View product details in a modal
+// View product details in a modal
+function viewProductDetails(productId) {
+    // Get product details by ID from server-side (already passed via Blade)
+    const productData = @json($products);
+    const product = productData.find(p => p.id === productId);
 
-        if (product) {
-            const modalContent = `
-                <h4>${product.name}</h4>
-                <p><strong>Description:</strong> ${product.description}</p>
-                <p><strong>Price:</strong> ${product.price ? '$' + product.price.toFixed(2) : 'N/A'}</p>
-                <p><strong>Discount Price:</strong> ${product.discount_price ? '$' + product.discount_price.toFixed(2) : 'N/A'}</p>
-                <p><strong>Quantity:</strong> ${product.quantity}</p>
-                <p><strong>Brand:</strong> ${product.brand || 'N/A'}</p>
-                <p><strong>Category:</strong> ${product.category_name}</p>
-                ${product.productImage && product.productImage.image_path ? `<p><strong>Image:</strong><br><img src="${asset('storage/' + product.productImage.image_path)}" alt="${product.name}" class="img-fluid"></p>` : ''}
-            `;
-
-            // Insert product details into the modal
-            document.getElementById('productDetailsContent').innerHTML = modalContent;
-
-            // Open the modal
-            const productModal = new bootstrap.Modal(document.getElementById('productModal'));
-            productModal.show();
+    if (product) {
+        let imagesHtml = '';
+        if (product.images) {
+            // Split images from the database
+            const images = product.images.split(',');
+            imagesHtml = images.map(image => 
+                `<img src="{{ asset('storage/') }}/${image}" alt="${product.name}" class="img-fluid" style="margin: 5px;">`
+            ).join('');
         }
+
+        // Ensure price is a number before calling .toFixed()
+        const price = parseFloat(product.price);
+        const discountPrice = product.discount_price ? parseFloat(product.discount_price) : null;
+
+        // Building the modal content dynamically
+        const modalContent = `
+            <h4>${product.name}</h4>
+            <p><strong>Description:</strong> ${product.description}</p>
+            <p><strong>Price:</strong> ${!isNaN(price) ? '$' + price.toFixed(2) : 'N/A'}</p>
+            <p><strong>Discount Price:</strong> ${discountPrice && !isNaN(discountPrice) ? '$' + discountPrice.toFixed(2) : 'N/A'}</p>
+            <p><strong>Quantity:</strong> ${product.quantity}</p>
+            <p><strong>Brand:</strong> ${product.brand || 'N/A'}</p>
+            <p><strong>Category:</strong> ${product.category_name || 'N/A'}</p> <!-- Display Category -->
+            <p><strong>Subcategory:</strong> ${product.subcategory_name || 'N/A'}</p> <!-- Display Subcategory -->
+            <p><strong>Warranty:</strong> ${product.warranty_month ? product.warranty_month + ' months' : 'N/A'}</p>
+            <p><strong>Min Order Quantity:</strong> ${product.min_order_qty || 'N/A'}</p>
+            <p><strong>Images:</strong><br>${imagesHtml}</p>
+        `;
+
+        // Insert product details into the modal content
+        document.getElementById('productDetailsContent').innerHTML = modalContent;
+
+        // Show the modal
+        const productModal = new bootstrap.Modal(document.getElementById('productModal'));
+        productModal.show();
     }
+}
+
+
 </script>

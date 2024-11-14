@@ -64,6 +64,7 @@
                     </div>
                 </div>
             
+                
                 <div class="row mb-3">
                     <!-- Product Images and Subcategory -->
                     <div class="col-md-6">
@@ -108,6 +109,18 @@
                     </div>
                 </div>
             
+                <div class="row mb-3">
+                    <!-- Product Description -->
+                    <div class="col-md-12">
+                        <label for="description" class="form-label">Product Description</label>
+                        <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" placeholder="Enter Product Description" required>{{ old('description') }}</textarea>
+                        @error('description')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                
                 <button type="submit" class="btn btn-primary">Add Product</button>
             </form>
             

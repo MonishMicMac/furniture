@@ -33,8 +33,10 @@ class Product extends Model
     /**
      * Define the relationship with the ProductMapping model.
      */
-    public function productImages()
-    {
-        return $this->hasMany(ProductImage::class);
-    }
+  // In Product.php model
+public function images()
+{
+    return $this->hasMany(ProductImage::class);
+}
+
 }

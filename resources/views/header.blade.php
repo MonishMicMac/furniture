@@ -60,9 +60,10 @@
                             <a href="/categories" class="dropdown-item">Add Category</a>
                             <a href="/subcategories" class="dropdown-item">Add Sub Category</a>
                             <a href="/products/show" class="dropdown-item">Add Product</a>
-                            <a href="/product_mapping/create" class="dropdown-item">Product Mapping</a>
+                            {{-- <a href="/product_mapping/create" class="dropdown-item">Product Mapping</a> --}}
 
-                            
+                            <a href="/banners/create" class="dropdown-item">App Banner</a>
+                            <a href="/promo/create" class="dropdown-item">App Banner</a>
 
                         </div>
                     </div>
@@ -72,7 +73,7 @@
                                 class="fa fa-laptop me-2"></i>Reports</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="/users" class="dropdown-item">Users</a>
-                            <a href="typography.html" class="dropdown-item">Typography</a>
+                            <a href="/productsshow" class="dropdown-item">Product</a>
                             <a href="element.html" class="dropdown-item">Other Elements</a>
                         </div>
                     </div>

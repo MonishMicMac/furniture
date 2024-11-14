@@ -35,7 +35,7 @@ class SubcategoryController extends Controller
     public function edit(Subcategory $subcategory)
     {
         $categories = Category::where('action', '0')->get(); // Only active categories
-        return view('subcategories.edit', compact('subcategory', 'categories'));
+        return view('subcategories_edit', compact('subcategory', 'categories'));
     }
 
     // Update a subcategory
