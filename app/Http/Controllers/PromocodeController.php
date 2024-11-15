@@ -25,14 +25,14 @@ class PromocodeController extends Controller
             'discount_type' => 'required|in:0,1',
             'discount' => 'required|numeric',
             'from_date' => 'nullable|date',
-            'to_date' => 'nullable|date', // Keep this if you want to use it
+           
+            'action' => 'nullable|in:0,1'
         ]);
     
         // Handle the date fields if provided
         $validated['from_date'] = isset($validated['from_date']) ? \Carbon\Carbon::parse($validated['from_date'])->format('Y-m-d') : null;
         $validated['expire_date'] = \Carbon\Carbon::parse($validated['expire_date'])->format('Y-m-d');
-        $validated['to_date'] = isset($validated['to_date']) ? \Carbon\Carbon::parse($validated['to_date'])->format('Y-m-d') : null;
-    
+       
         // Create a new promo code record
         Promocode::create($validated);
     
@@ -49,6 +49,7 @@ class PromocodeController extends Controller
 
 public function update(Request $request, $id)
 {
+    // dd($request);
     // Find the promocode by ID
     $promocode = Promocode::findOrFail($id);
 
@@ -59,7 +60,7 @@ public function update(Request $request, $id)
         'discount_type' => 'required|in:0,1',
         'discount' => 'required|numeric',
         'from_date' => 'nullable|date',
-        
+        'action' => 'nullable|in:0,1'
     ]);
 
     // Debug the validated data before updating (you can remove this after debugging)
