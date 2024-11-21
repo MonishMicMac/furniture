@@ -1,8 +1,11 @@
 <?php
 use App\Http\Controllers\AppBannerController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LiquatationController;
 use App\Http\Controllers\ProductMappingController;
+use App\Http\Controllers\ProductStockController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StockChangeController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -91,4 +94,23 @@ Route::put('/promocode/{id}', [PromocodeController::class, 'update'])->name('pro
 
 // Route to delete a promo code
 Route::delete('/promocode/{id}', [PromocodeController::class, 'destroy'])->name('promocode.destroy');
+
+
+Route::get('/stock_edit', [StockChangeController::class, 'index'])->name('stock.index');
+
+Route::get('/product_stock/edit/{id}', [StockChangeController::class, 'edit'])->name('product_stock.edit');
+Route::post('/product_stock/update/{id}', [StockChangeController::class, 'update'])->name('product_stock.update');
+
+Route::get('/add_stock', [StockChangeController::class, 'showAddStockForm'])->name('product_stock.add');
+Route::post('/add_stock', [StockChangeController::class, 'handleAddStock'])->name('product_stock.handleAddStock');
+
+// web.php
+Route::get('/closing_stock', [ProductStockController::class, 'showClosingStockForm'])->name('product_stock.closing');
+Route::post('/closing_stock', [ProductStockController::class, 'handleClosingStock'])->name('product_stock.closing.handle');
+
+
+Route::get('/Liquatation', [LiquatationController::class, 'index'])->name('liquatation.index');
+Route::post('/update-product/{id}', [LiquatationController::class, 'update'])->name('product.update');
+Route::get('/product/report', [LiquatationController::class, 'showReport'])->name('liqproduct.report');
+
 require __DIR__.'/auth.php';

@@ -32,4 +32,32 @@ class Promocode extends Model
     {
         return \Carbon\Carbon::parse($value)->format('Y-m-d');
     }
+
+
+     /**
+     * Check if a promo code exists with action = '0' and return relevant details.
+     *
+     * @param string $promoCode
+     * @return array|null
+     */
+    public static function checkPromoCode($promoCode)
+    {
+        // Fetch the record by promo code where action is '0'
+        $record = self::where('code', $promoCode)
+                      ->where('action', '0')
+                      ->first();
+
+        // If a record is found, return the necessary details
+        if ($record) {
+            return [
+                'from_date' => $record->from_date,
+                'expire_date' => $record->expire_date,
+                'discount_type' => $record->discount_type,
+                'discount' => $record->discount,
+            ];
+        }
+
+        return null;
+    }
+    
 }

@@ -1,10 +1,16 @@
 <?php
-
-namespace App\Http\Controllers;
-
+ /**
+     * Handle profile image upload.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string|null
+     */
+namespace App\Http\Controllers\api;
 use Illuminate\Http\Request;
 use App\Models\Login;
 use Validator;
+use App\Http\Controllers\Controller;
+
 
 class LoginController extends Controller
 {
@@ -47,12 +53,7 @@ class LoginController extends Controller
         return response()->json(['message' => 'User created successfully!'], 201);
     }
 
-    /**
-     * Handle profile image upload.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|null
-     */
+   
     private function uploadProfileImage(Request $request)
     {
         if ($request->hasFile('profile_img_path')) {
@@ -64,4 +65,43 @@ class LoginController extends Controller
         }
         return null; // If no file is uploaded, return null
     }
+
+
+    public function check_login(Request $request)
+{
+    // Validate the incoming request data using Validator
+    $validator = Validator::make($request->all(), [
+        'mobile_number' => 'required|string',
+        'password' => 'required|string',
+    ]);
+
+    // Check if validation fails
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+    // Retrieve user based on the provided mobile number
+    $user = Login::where('mobile_number', $request->input('mobile_number'))->first();
+
+    // dd($user);
+    // Check if user exists and if the provided password matches the stored password
+    if ($user && $request->input('password') === $user->password) {
+        // Password is correct, return user data
+        return response()->json([
+            'success' => true,
+            'message' => 'Login successful',
+            'data' => $user,
+        ], 200);
+    } else {
+        // Password is incorrect or user does not exist
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid mobile number or password',
+        ], 401);
+    }
+}
 }

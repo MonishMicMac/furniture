@@ -32,4 +32,28 @@ class ProductStockManagement extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+
+
+    /**
+     * Get the current_balance for a given product_id and product_code.
+     *
+     * @param int $productId
+     * @param string $productCode
+     * @return float|null
+     */
+    public static function getCurrentBalance($productId, $productCode)
+    {
+        // Fetch the latest record based on product_id and product_code in descending order by id
+        $record = self::where('product_id', $productId)
+                      ->where('product_code', $productCode)
+                      ->orderBy('id', 'desc')
+                      ->limit(1)
+                      ->first();
+
+        // Return the current_balance if the record is found, null otherwise
+        return $record ? $record->current_stock : null;
+    }
+    
+    
 }

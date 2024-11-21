@@ -26,7 +26,8 @@ class Product extends Model
         'product_code',  // Added product_code_availability
         'warranty_month',             // Added warranty_month
         'min_order_qty',              // Added min_order_qty
-        'liquidation_status',         // Added liquidation_status
+        'liquidation_status',  
+        'liquatation_quantity',       // Added liquidation_status
     ];
     
 
@@ -37,6 +38,16 @@ class Product extends Model
 public function images()
 {
     return $this->hasMany(ProductImage::class);
+}
+
+public function stock()
+{
+    return $this->hasMany(ProductStockManagement::class, 'product_id');
+}
+
+public function latestStock()
+{
+    return $this->hasOne(ProductStockManagement::class, 'product_id')->orderBy('created_at', 'desc');
 }
 
 }

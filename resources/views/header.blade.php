@@ -18,7 +18,7 @@
 <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -63,29 +63,35 @@
                             {{-- <a href="/product_mapping/create" class="dropdown-item">Product Mapping</a> --}}
 
                             <a href="/banners/create" class="dropdown-item">App Banner</a>
-                            <a href="/promo/create" class="dropdown-item">App Banner</a>
+                            <a href="/promo/create" class="dropdown-item">Create Promo</a>
 
                         </div>
                     </div>
 
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                                class="fa fa-laptop me-2"></i>Reports</a>
+                                class="fa fa-laptop me-2"></i>Activity</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="/users" class="dropdown-item">Users</a>
                             <a href="/productsshow" class="dropdown-item">Product</a>
-                            <a href="element.html" class="dropdown-item">Other Elements</a>
+
+                            <a href="/stock_edit" class="dropdown-item">Stock Edit</a>
+
+                            <a href="/add_stock" class="dropdown-item">Add Stock</a>
+                            <a href="/closing_stock" class="dropdown-item">Closing Stock</a>
+                            <a href="/Liquatation" class="dropdown-item">Add Liquatation</a>
                         </div>
                     </div>
 
 
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                                class="fa fa-laptop me-2"></i>Elements</a>
+                                class="fa fa-laptop me-2"></i>Report</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="button.html" class="dropdown-item">Buttons</a>
-                            <a href="typography.html" class="dropdown-item">Typography</a>
-                            <a href="element.html" class="dropdown-item">Other Elements</a>
+                          
+                           
+                            <a href="/product/report" class="dropdown-item">Liquatation</a>
+                            <a href="/Liquatation" class="dropdown-item">Add Liquatation</a>
                         </div>
                     </div>
 
